@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mahin Mess Management</title>
+  <meta name="theme-color" content="#87CEEB"/>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --sky-blue: #87CEEB;
+      --deep-blue: #1E90FF;
+      --rgb-effect: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff);
+    }
+    body {
+      background: linear-gradient(135deg, var(--sky-blue), #e0f7fa);
+      min-height: 100vh;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .welcome-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin: 20px 0;
+      background: var(--rgb-effect);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rgbFlow 8s linear infinite;
+    }
+    @keyframes rgbFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .admin-panel {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: var(--deep-blue);
+      color: white;
+    }
+    .photo-upload {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .install-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--deep-blue);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="welcome-title">WELCOME TO MAHIN MESS</h1>
+    <p style="text-align: center;">made by BYAZID</p>
+    <div class="admin-panel">
+      <h2>Admin Panel</h2>
+      <button id="admin-login">Login as Admin</button>
+      <div id="admin-controls" style="display: none;">
+        <button id="edit-data">Edit Data</button>
+        <button id="save-data">Save Data</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>Name</th>
+          <th>Room Rent</th>
+          <th>Meal</th>
+          <th>Due</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="photo-upload">+</div></td>
+          <td>Member 1</td>
+          <td>3000</td>
+          <td>1500</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="install-btn" id="installBtn">Install App</button>
+  <script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
+    });
+    const ADMIN_PASSWORD = "MAHINMESSADMIN99";
+    const adminLogin = document.getElementById('admin-login');
+    const adminControls = document.getElementById('admin-controls');
+    adminLogin.addEventListener('click', () => {
+      const password = prompt("Enter admin password:");
+      if (password === ADMIN_PASSWORD) {
+        adminControls.style.display = 'block';
+        alert("Admin mode activated!");
+      } else {
+        alert("Wrong password!");
+      }
+    });
+  </script>
+</body>
+</html>
